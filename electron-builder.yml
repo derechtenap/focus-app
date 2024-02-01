@@ -1,0 +1,20 @@
+appId: com.app.focus
+productName: Focus
+copyright: Copyright © 2022-2024 Focus Contributors
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish:
+  - provider: github
+    protocol: https
+win:
+  target: nsis
+nsis:
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: true
+  oneClick: false # `false` = assisted installer
