@@ -18,6 +18,8 @@ import DefaultLayout from "@components/layout/DefaultLayout";
 import { useInputState } from "@mantine/hooks";
 import { DEFAULT_FOCUS_SETTINGS } from "@utils/constants";
 import { IconTag } from "@tabler/icons-react";
+import { useRouter } from "next/router";
+import { randomUUID } from "crypto";
 
 /**
  *
@@ -35,6 +37,8 @@ const IndexPage: NextPage = (): JSX.Element => {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
+
+  const router = useRouter();
 
   const sliderOptions: SliderProps["marks"] = [
     {
@@ -59,12 +63,15 @@ const IndexPage: NextPage = (): JSX.Element => {
       startedAt: Date.now(),
       minutes: focusMinutes,
       tag: focusTag,
+      uuid: randomUUID(),
       isAborted: false,
       isCompleted: false,
     };
 
-    // TODO: Add routing to session page
-    console.info(focusSessionData);
+    // Go to active session route with session data
+    void router.push("/session/active", {
+      query: { session: JSON.stringify(focusSessionData, null, 2) },
+    });
   };
 
   return (
