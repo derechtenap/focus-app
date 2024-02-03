@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useInterval } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useRouter } from "next/router";
+import { formatTimerTime } from "@utils/timer/formatTimerTime";
 
 const SessionPage: NextPage = () => {
   const [seconds, setSeconds] = useState(0);
@@ -34,23 +35,9 @@ const SessionPage: NextPage = () => {
     }
   }, [seconds]);
 
-  const formatTime = (timeInSeconds: number) => {
-    const hours = Math.floor(timeInSeconds / 3600);
-    const remainingMinutes = Math.floor((timeInSeconds % 3600) / 60);
-    const seconds = timeInSeconds % 60;
 
-    let formattedTime = "";
 
-    if (hours > 0) {
-      formattedTime += `${hours.toString().padStart(2, "0")}:`;
     }
-
-    formattedTime += `${remainingMinutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-
-    return formattedTime;
-  };
 
   return (
     <DefaultLayout disableAppShell>
@@ -66,7 +53,7 @@ const SessionPage: NextPage = () => {
                   </ThemeIcon>
                 ) : (
                   <Text size="xl" fw="bold">
-                    {formatTime(parsedSessionData.minutes * 60 - seconds)}
+                    {formatTimerTime(parsedSessionData.minutes * 60 - seconds)}
                   </Text>
                 )}
               </Center>
