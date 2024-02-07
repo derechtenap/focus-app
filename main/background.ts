@@ -64,6 +64,12 @@ ipcMain.on("quit-app", () => {
   app.quit();
 });
 
+ipcMain.on("get-app-folder", (e) => {
+  const appPath = app.getPath("appData");
+
+  e.sender.send("app-folder-response", appPath);
+});
+
 ipcMain.on("open-dev-tools", () => {
   const focusedWindow = BrowserWindow.getFocusedWindow();
 

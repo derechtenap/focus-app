@@ -13,6 +13,9 @@ import { readSessionStorageValue, useInterval } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { formatTimerTime } from "@utils/timer/formatTimerTime";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
+import path from "path";
+import { ipcRenderer } from "electron";
 
 const SessionPage: NextPage = () => {
   const router = useRouter();
@@ -43,6 +46,37 @@ const SessionPage: NextPage = () => {
       interval.stop();
     }
   }, [seconds]);
+
+  const closeSession = () => {
+    const data: FocusSession = {
+      ...sessionData,
+      isAborted: !isSessionFinished, // Aborted when session is `not` finished
+      isCompleted: true, // Mark as opened
+    };
+
+    ipcRenderer.send("get-app-folder");
+
+    ipcRenderer.on("app-folder-response", (event, appPath) => {
+      const sessionFolderPath = path.join(
+        appPath as string,
+        "Focus",
+        "sessions"
+      );
+      const sessionFilePath = path.join(
+        sessionFolderPath,
+        `${data.uuid}.session`
+      );
+
+      // Check if the folder exists, create it if not
+      if (!existsSync(sessionFolderPath)) {
+        mkdirSync(sessionFolderPath, { recursive: true });
+      }
+
+      // Write the file
+      writeFileSync(sessionFilePath, JSON.stringify(data), "utf8");
+    });
+    void router.push("/");
+  };
 
   return (
     <DefaultLayout disableAppShell>
@@ -78,7 +112,7 @@ const SessionPage: NextPage = () => {
             bg={isSessionFinished ? "green" : "red"}
             w="fit-content"
             mx="auto"
-            onClick={() => void router.push("/")}
+            onClick={() => closeSession()}
           >
             {isSessionFinished ? "Finish Session" : "Abort Session"}
           </Button>
