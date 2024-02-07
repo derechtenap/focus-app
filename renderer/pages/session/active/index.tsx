@@ -51,7 +51,6 @@ const SessionPage: NextPage = () => {
     const data: FocusSession = {
       ...sessionData,
       isAborted: !isSessionFinished, // Aborted when session is `not` finished
-      isCompleted: true, // Mark as opened
     };
 
     ipcRenderer.send("get-app-folder");

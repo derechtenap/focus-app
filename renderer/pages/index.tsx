@@ -29,7 +29,6 @@ const IndexPage: NextPage = (): JSX.Element => {
       tag: "",
       startedAt: Date.now(),
       isAborted: false,
-      isCompleted: false,
       uuid: randomUUID(),
     },
 
