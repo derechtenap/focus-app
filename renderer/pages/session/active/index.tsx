@@ -9,24 +9,32 @@ import {
   ThemeIcon,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useInterval } from "@mantine/hooks";
+import { readSessionStorageValue, useInterval } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { formatTimerTime } from "@utils/timer/formatTimerTime";
 
 const SessionPage: NextPage = () => {
+  const router = useRouter();
   const [seconds, setSeconds] = useState(0);
   const interval = useInterval(() => setSeconds((s) => s + 1), 1000);
-  const sessionParams = new URLSearchParams(document.location.search);
-  const sessionData = sessionParams.get("session");
-  const router = useRouter();
+
+  const sessionData = readSessionStorageValue({
+    key: "currentSession",
+    deserialize: (data) => {
+      if (data) {
+        return JSON.parse(data) as FocusSession;
+      }
+
+      return undefined;
+    },
+  });
 
   if (!sessionData) {
-    throw new Error("No Session Data found!");
+    return void router.push("/");
   }
 
-  const parsedSessionData = JSON.parse(sessionData) as FocusSession;
-  const isSessionFinished = seconds >= parsedSessionData.minutes * 60;
+  const isSessionFinished = seconds >= sessionData.minutes * 60;
 
   useEffect(() => {
     interval.start();
@@ -50,7 +58,7 @@ const SessionPage: NextPage = () => {
                   </ThemeIcon>
                 ) : (
                   <Text size="xl" fw="bold">
-                    {formatTimerTime(parsedSessionData.minutes * 60 - seconds)}
+                    {formatTimerTime(sessionData.minutes * 60 - seconds)}
                   </Text>
                 )}
               </Center>
@@ -60,8 +68,8 @@ const SessionPage: NextPage = () => {
                 color: "green",
                 value:
                   100 -
-                  ((parsedSessionData.minutes * 60 - seconds) /
-                    (parsedSessionData.minutes * 60)) *
+                  ((sessionData.minutes * 60 - seconds) /
+                    (sessionData.minutes * 60)) *
                     100,
               },
             ]}

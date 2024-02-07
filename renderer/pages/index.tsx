@@ -19,13 +19,9 @@ import { DEFAULT_FOCUS_SETTINGS } from "@utils/constants";
 import { IconTag } from "@tabler/icons-react";
 import { isInRange, isNotEmpty, useForm } from "@mantine/form";
 import { randomUUID } from "crypto";
-/**
- *
- * @author Tim Deres <derechtenap>
- *
- * @returns {JSX.Element}
- *
- */
+import { useSessionStorage } from "@mantine/hooks";
+import { useRouter } from "next/router";
+
 const IndexPage: NextPage = (): JSX.Element => {
   const sessionForm = useForm<FocusSession>({
     initialValues: {
@@ -45,6 +41,13 @@ const IndexPage: NextPage = (): JSX.Element => {
       uuid: isNotEmpty(),
     },
   });
+
+  const [, setCurrentSessionValue] = useSessionStorage({
+    key: "currentSession",
+    defaultValue: {},
+  });
+
+  const router = useRouter();
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -67,6 +70,12 @@ const IndexPage: NextPage = (): JSX.Element => {
       {tag}
     </Combobox.Option>
   ));
+
+  const setCurrentSession = () => {
+    const sessionData = sessionForm.values;
+    setCurrentSessionValue(sessionData);
+    void router.push("/session/active");
+  };
 
   return (
     <DefaultLayout>
@@ -154,7 +163,7 @@ const IndexPage: NextPage = (): JSX.Element => {
               mx="auto"
               variant="gradient"
               gradient={{ from: "green", to: "blue", deg: 140 }}
-              onClick={() => void console.info(sessionForm.isValid())}
+              onClick={() => setCurrentSession()}
               disabled={!sessionForm.isValid()}
             >
               Let's Start!
