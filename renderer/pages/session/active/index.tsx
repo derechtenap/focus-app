@@ -34,7 +34,7 @@ const SessionPage: NextPage = () => {
   });
 
   if (!sessionData) {
-    return void router.push("/");
+    return <DefaultLayout>Unable to load Session!</DefaultLayout>;
   }
 
   const isSessionFinished = seconds >= sessionData.minutes * 60;
