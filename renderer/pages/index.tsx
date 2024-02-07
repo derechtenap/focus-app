@@ -23,6 +23,7 @@ import { useSessionStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 
 const IndexPage: NextPage = (): JSX.Element => {
+  const router = useRouter();
   const sessionForm = useForm<FocusSession>({
     initialValues: {
       minutes: DEFAULT_FOCUS_SETTINGS.TIMER.DEFAULT_MINS,
@@ -45,8 +46,6 @@ const IndexPage: NextPage = (): JSX.Element => {
     key: "currentSession",
     defaultValue: {},
   });
-
-  const router = useRouter();
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),

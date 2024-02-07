@@ -4,6 +4,8 @@ import {
   Avatar,
   Divider,
   Group,
+  NavLink,
+  NumberFormatter,
   ScrollArea,
   Stack,
   Text,
@@ -13,12 +15,16 @@ import { useDisclosure, useFullscreen } from "@mantine/hooks";
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,
+  IconChartBar,
+  IconCoins,
   IconPlant,
+  IconShoppingBag,
   IconSquareMinus,
   IconSquareXFilled,
 } from "@tabler/icons-react";
 import { APP_NAME } from "@utils/constants";
 import { ipcRenderer } from "electron";
+import { useRouter } from "next/router";
 
 type DefaultLayoutProps = {
   children: React.ReactNode;
@@ -34,6 +40,7 @@ const DefaultLayout = ({ children, disableAppShell }: DefaultLayoutProps) => {
   // const [openedAside, { toggle: toggleAside }] = useDisclosure();
   const { fullscreen: appIsFullscreen, toggle: toggleFullscreen } =
     useFullscreen();
+
   return (
     <AppShell
       aside={{
@@ -81,8 +88,11 @@ const DefaultLayout = ({ children, disableAppShell }: DefaultLayoutProps) => {
               {APP_NAME}
             </Text>
           </Group>
-          <div>Center</div>
           <Group>
+            <Group c="yellow" gap="xs">
+              <IconCoins />
+              <NumberFormatter thousandSeparator value={3333} />
+            </Group>
             <ActionIcon
               c="gray"
               variant="transparent"
@@ -136,6 +146,12 @@ const DefaultLayout = ({ children, disableAppShell }: DefaultLayoutProps) => {
 };
 
 export const AppNavbar = () => {
+  const router = useRouter();
+
+  const isActiveRoute = (route: string): boolean => {
+    return route === router.route;
+  };
+
   return (
     <AppShell.Navbar h={`calc(100% - ${headerHeight}px)`}>
       <AppShell.Section
@@ -144,7 +160,24 @@ export const AppNavbar = () => {
         grow
         pb="md"
       >
-        ScrollArea
+        <NavLink
+          active={isActiveRoute("/")}
+          label="Plant"
+          leftSection={<IconPlant />}
+          onClick={() => void router.push("/")}
+        />
+        <NavLink
+          active={isActiveRoute("/shop")}
+          label="Shop"
+          leftSection={<IconShoppingBag />}
+          onClick={() => void router.push("/shop")}
+        />
+        <NavLink
+          active={isActiveRoute("/statistics")}
+          disabled
+          label="Statistics"
+          leftSection={<IconChartBar />}
+        />
       </AppShell.Section>
       <Divider />
       <AppShell.Section bg="dark.8" py="lg">
