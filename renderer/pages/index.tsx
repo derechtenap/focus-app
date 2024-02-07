@@ -15,12 +15,10 @@ import {
   useCombobox,
 } from "@mantine/core";
 import DefaultLayout from "@components/layout/DefaultLayout";
-import { useInputState } from "@mantine/hooks";
 import { DEFAULT_FOCUS_SETTINGS } from "@utils/constants";
 import { IconTag } from "@tabler/icons-react";
-import { useRouter } from "next/router";
+import { isInRange, isNotEmpty, useForm } from "@mantine/form";
 import { randomUUID } from "crypto";
-
 /**
  *
  * @author Tim Deres <derechtenap>
@@ -29,16 +27,28 @@ import { randomUUID } from "crypto";
  *
  */
 const IndexPage: NextPage = (): JSX.Element => {
-  const [focusMinutes, setMinutes] = useInputState<number>(
-    DEFAULT_FOCUS_SETTINGS.TIMER.DEFAULT_MINS
-  );
-  const [focusTag, setFocusTag] = useInputState<string>("");
+  const sessionForm = useForm<FocusSession>({
+    initialValues: {
+      minutes: DEFAULT_FOCUS_SETTINGS.TIMER.DEFAULT_MINS,
+      tag: "",
+      startedAt: Date.now(),
+      isAborted: false,
+      isCompleted: false,
+      uuid: randomUUID(),
+    },
+
+    validate: {
+      minutes: isInRange({
+        min: DEFAULT_FOCUS_SETTINGS.TIMER.MIN_MINS,
+        max: DEFAULT_FOCUS_SETTINGS.TIMER.MAX_MINS,
+      }),
+      uuid: isNotEmpty(),
+    },
+  });
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
-
-  const router = useRouter();
 
   const sliderOptions: SliderProps["marks"] = [
     {
@@ -57,22 +67,6 @@ const IndexPage: NextPage = (): JSX.Element => {
       {tag}
     </Combobox.Option>
   ));
-
-  const startFocus = () => {
-    const focusSessionData: FocusSession = {
-      startedAt: Date.now(),
-      minutes: focusMinutes,
-      tag: focusTag,
-      uuid: randomUUID(),
-      isAborted: false,
-      isCompleted: false,
-    };
-
-    // Go to active session route with session data
-    void router.push("/session/active", {
-      query: { session: JSON.stringify(focusSessionData, null, 2) },
-    });
-  };
 
   return (
     <DefaultLayout>
@@ -97,7 +91,7 @@ const IndexPage: NextPage = (): JSX.Element => {
                     component="span"
                     truncate="end"
                   >
-                    {focusMinutes} minutes
+                    {sessionForm.values.minutes} minutes
                   </Text>{" "}
                   together!
                 </Text>
@@ -105,7 +99,12 @@ const IndexPage: NextPage = (): JSX.Element => {
               size={300}
               thickness={15}
               roundCaps
-              sections={[{ color: "green", value: (focusMinutes / 120) * 100 }]}
+              sections={[
+                {
+                  color: "green",
+                  value: (sessionForm.values.minutes / 120) * 100,
+                },
+              ]}
               mb={0}
             />
             <Slider
@@ -120,12 +119,12 @@ const IndexPage: NextPage = (): JSX.Element => {
               marks={sliderOptions}
               min={DEFAULT_FOCUS_SETTINGS.TIMER.MIN_MINS}
               max={DEFAULT_FOCUS_SETTINGS.TIMER.MAX_MINS}
-              onChange={(minutes) => setMinutes(minutes)}
+              {...sessionForm.getInputProps("minutes")}
             />
             <Combobox
               store={combobox}
               onOptionSubmit={(tag) => {
-                setFocusTag(tag);
+                sessionForm.setFieldValue("tag", tag);
                 combobox.closeDropdown();
               }}
             >
@@ -139,7 +138,11 @@ const IndexPage: NextPage = (): JSX.Element => {
                   rightSectionPointerEvents="none"
                   onClick={() => combobox.toggleDropdown()}
                 >
-                  {focusTag || <Input.Placeholder>Pick Tag</Input.Placeholder>}
+                  {sessionForm.values.tag === "" ? (
+                    <Input.Placeholder>Pick Tag</Input.Placeholder>
+                  ) : (
+                    <>{sessionForm.values.tag}</>
+                  )}
                 </InputBase>
               </Combobox.Target>
               <Combobox.Dropdown>
@@ -151,7 +154,8 @@ const IndexPage: NextPage = (): JSX.Element => {
               mx="auto"
               variant="gradient"
               gradient={{ from: "green", to: "blue", deg: 140 }}
-              onClick={() => startFocus()}
+              onClick={() => void console.info(sessionForm.isValid())}
+              disabled={!sessionForm.isValid()}
             >
               Let's Start!
             </Button>

@@ -24,6 +24,7 @@ const SessionPage: NextPage = () => {
   if (!sessionData) {
     throw new Error("No Session Data found!");
   }
+
   const parsedSessionData = JSON.parse(sessionData) as FocusSession;
   const isSessionFinished = seconds >= parsedSessionData.minutes * 60;
 
@@ -34,10 +35,6 @@ const SessionPage: NextPage = () => {
       interval.stop();
     }
   }, [seconds]);
-
-
-
-    }
 
   return (
     <DefaultLayout disableAppShell>
