@@ -181,7 +181,11 @@ const DefaultLayout = ({
               {upperFirst(CLIENT_OS)}
             </Text>
             <Text component="span" fz="xs" display="block">
-              Network Status: {NETWORK_STATUS.online ? "Online" : "Offline"}
+              {t("networkStatus.label")}
+              {": "}
+              {NETWORK_STATUS.online
+                ? t("networkStatus.online")
+                : t("networkStatus.offline")}
             </Text>
           </Text>
         </AppShell.Section>

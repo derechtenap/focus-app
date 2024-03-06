@@ -5,6 +5,12 @@
   "minimizeApp": "Minimize",
   "fullscreenMode": "Fullscreen",
   "windowedMode": "Windowed Mode",
+  "minutes": "Minutes",
+  "networkStatus": {
+    "label": "Network Status",
+    "online": "Online",
+    "offline": "Offline"
+  },
   "closeApp": "Close",
   "routes": {
     "home": "Home",

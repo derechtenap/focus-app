@@ -7,6 +7,11 @@
   "windowedMode": "Fenstermodus",
   "closeApp": "Schließen",
   "minutes": "Minuten",
+  "networkStatus": {
+    "label": "Netzwerk Status",
+    "online": "Online",
+    "offline": "Offline"
+  },
   "routes": {
     "home": "Startseite",
     "shop": "Shop",
