@@ -9,6 +9,7 @@ import {
   ScrollArea,
   Stack,
   Text,
+  Tooltip,
   rem,
 } from "@mantine/core";
 import { useDisclosure, useFullscreen } from "@mantine/hooks";
@@ -88,11 +89,22 @@ const DefaultLayout = ({ children, disableAppShell }: DefaultLayoutProps) => {
               {APP_NAME}
             </Text>
           </Group>
-          <Group>
-            <Group c="yellow" gap="xs">
-              <IconCoins />
-              <NumberFormatter thousandSeparator value={3333} />
-            </Group>
+          <Group
+            style={{
+              cursor: "help",
+            }}
+          >
+            <Tooltip
+              label="Your Coin Balance is currently 0. Complete focus sessions and earn more Coins!"
+              multiline
+              w={256}
+              withArrow
+            >
+              <Group c="yellow" gap="xs">
+                <IconCoins />
+                <NumberFormatter thousandSeparator value={0} />
+              </Group>
+            </Tooltip>
             <ActionIcon
               c="gray"
               variant="transparent"
