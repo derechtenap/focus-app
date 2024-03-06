@@ -1,5 +1,4 @@
-import type { NextPage } from "next";
-import DefaultLayout from "@components/layout/DefaultLayout";
+import DefaultLayout from "@components/layout/Default";
 import {
   Button,
   Center,
@@ -16,8 +15,14 @@ import { formatTimerTime } from "@utils/timer/formatTimerTime";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import path from "path";
 import { ipcRenderer } from "electron";
+import { useTranslation } from "next-i18next";
+import { getStaticPaths, makeStaticProperties } from "lib/get-static";
 
-const SessionPage: NextPage = () => {
+const SessionPage = () => {
+  const {
+    t,
+    i18n: { language: locale },
+  } = useTranslation();
   const router = useRouter();
   const [seconds, setSeconds] = useState(0);
   const interval = useInterval(() => setSeconds((s) => s + 1), 1000);
@@ -34,7 +39,9 @@ const SessionPage: NextPage = () => {
   });
 
   if (!sessionData) {
-    return <DefaultLayout>Unable to load Session!</DefaultLayout>;
+    return (
+      <DefaultLayout withNavbarOpen>Unable to load Session!</DefaultLayout>
+    );
   }
 
   const isSessionFinished = seconds >= sessionData.minutes * 60;
@@ -53,6 +60,10 @@ const SessionPage: NextPage = () => {
       isAborted: !isSessionFinished, // Aborted when session is `not` finished
     };
 
+    void router.push(`/${locale}/`); // TODO: Route to overview screen instead of index page
+
+    // TODO: Update Code! `node:fs` is not working with i18n and static props
+    /*
     ipcRenderer.send("get-app-folder");
 
     ipcRenderer.on("app-folder-response", (event, appPath) => {
@@ -75,10 +86,11 @@ const SessionPage: NextPage = () => {
       writeFileSync(sessionFilePath, JSON.stringify(data), "utf8");
     });
     void router.push("/");
+    */
   };
 
   return (
-    <DefaultLayout disableAppShell>
+    <DefaultLayout withNavbarOpen={false}>
       <Center h="100%">
         <Stack>
           <RingProgress
@@ -113,7 +125,9 @@ const SessionPage: NextPage = () => {
             mx="auto"
             onClick={() => closeSession()}
           >
-            {isSessionFinished ? "Finish Session" : "Abort Session"}
+            {isSessionFinished
+              ? t("finishSession", { ns: "session" })
+              : t("abortSession", { ns: "session" })}
           </Button>
         </Stack>
       </Center>
@@ -122,3 +136,7 @@ const SessionPage: NextPage = () => {
 };
 
 export default SessionPage;
+
+export const getStaticProps = makeStaticProperties(["common", "session"]);
+
+export { getStaticPaths };

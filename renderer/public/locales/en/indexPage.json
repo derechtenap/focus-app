@@ -1,0 +1,6 @@
+{
+  "greeting": "Hello {{username}}! You focused {{time}} minutes today.",
+  "ctaFocus": "Lets focus for {{time}} minutes together!",
+  "pickTag": "Pick Tag",
+  "startFocus": "Let's start!"
+}

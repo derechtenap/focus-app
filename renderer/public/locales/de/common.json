@@ -1,0 +1,16 @@
+{
+  "yes": "Ja",
+  "no": "Nein",
+  "toggleNavigation": "Navigation umschalten",
+  "minimizeApp": "Minimieren",
+  "fullscreenMode": "Vollbild",
+  "windowedMode": "Fenstermodus",
+  "closeApp": "Schließen",
+  "minutes": "Minuten",
+  "routes": {
+    "home": "Startseite",
+    "shop": "Shop",
+    "settings": "Einstellungen"
+  },
+  "xMinutes": "{{minutes}} Min."
+}

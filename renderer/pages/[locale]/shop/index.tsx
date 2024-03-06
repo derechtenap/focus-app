@@ -1,6 +1,4 @@
-import type { NextPage } from "next";
-
-import DefaultLayout, { headerHeight } from "@components/layout/DefaultLayout";
+import DefaultLayout, { headerHeight } from "@components/layout/Default";
 import {
   Card,
   Container,
@@ -10,10 +8,14 @@ import {
   Tabs,
 } from "@mantine/core";
 import { IconLeaf, IconPhoto } from "@tabler/icons-react";
+import { useTranslation } from "next-i18next";
+import { getStaticPaths, makeStaticProperties } from "lib/get-static";
 
-const ShopPage: NextPage = () => {
+const ShopPage = () => {
+  const { t } = useTranslation();
+
   return (
-    <DefaultLayout>
+    <DefaultLayout withNavbarOpen>
       <Container ml={0} maw={1200} pl={0}>
         <Tabs
           orientation="vertical"
@@ -22,10 +24,10 @@ const ShopPage: NextPage = () => {
         >
           <Tabs.List mr="xs">
             <Tabs.Tab value="plants" leftSection={<IconLeaf />}>
-              Plants
+              {t("categories.plants", { ns: "shop" })}
             </Tabs.Tab>
             <Tabs.Tab value="backgrounds" leftSection={<IconPhoto />}>
-              Backgrounds
+              {t("categories.backgrounds", { ns: "shop" })}
             </Tabs.Tab>
           </Tabs.List>
 
@@ -80,3 +82,7 @@ const ShopPage: NextPage = () => {
 };
 
 export default ShopPage;
+
+export const getStaticProps = makeStaticProperties(["common", "shop"]);
+
+export { getStaticPaths };

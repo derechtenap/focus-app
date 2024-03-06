@@ -1,0 +1,6 @@
+{
+  "greeting": "Hallo {{username}}! Du warst bereits {{time}} Minuten fokussiert heute.",
+  "ctaFocus": "Lass uns für {{time}} Minuten fokussieren!",
+  "pickTag": "Kategorie wählen",
+  "startFocus": "Lass uns loslegen!"
+}
