@@ -1,5 +1,3 @@
-import type { UUID } from "crypto";
-
 export {};
 
 declare global {
@@ -7,7 +5,7 @@ declare global {
     startedAt: number;
     minutes: number;
     tag: string;
-    uuid: UUID;
+    uuid: string;
     // sessionProgress: number; // Number between 0-100 [%]
     isAborted: boolean;
   };
