@@ -1,0 +1,21 @@
+{
+  "yes": "Yes",
+  "no": "No",
+  "toggleNavigation": "Toggle Navigation",
+  "minimizeApp": "Minimize",
+  "fullscreenMode": "Fullscreen",
+  "windowedMode": "Windowed Mode",
+  "minutes": "Minutes",
+  "networkStatus": {
+    "label": "Network Status",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "closeApp": "Close",
+  "routes": {
+    "home": "Home",
+    "shop": "Shop",
+    "settings": "Settings"
+  },
+  "xMinutes": "{{minutes}} min."
+}

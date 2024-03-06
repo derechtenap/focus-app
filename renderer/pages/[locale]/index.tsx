@@ -1,4 +1,12 @@
-import type { NextPage } from "next";
+import React from "react";
+import { useTranslation } from "next-i18next";
+
+import { getStaticPaths, makeStaticProperties } from "../../lib/get-static";
+import DefaultLayout from "@components/layout/Default";
+import { useRouter } from "next/router";
+import { DEFAULT_FOCUS_SETTINGS } from "@utils/constants";
+// import { randomUUID } from "crypto";
+import { useSessionStorage } from "@mantine/hooks";
 import {
   Button,
   Center,
@@ -14,15 +22,15 @@ import {
   Title,
   useCombobox,
 } from "@mantine/core";
-import DefaultLayout from "@components/layout/DefaultLayout";
-import { DEFAULT_FOCUS_SETTINGS } from "@utils/constants";
+import { isInRange, /* isNotEmpty, */ useForm } from "@mantine/form";
 import { IconTag } from "@tabler/icons-react";
-import { isInRange, isNotEmpty, useForm } from "@mantine/form";
-import { randomUUID } from "crypto";
-import { useSessionStorage } from "@mantine/hooks";
-import { useRouter } from "next/router";
 
-const IndexPage: NextPage = (): JSX.Element => {
+const IndexPage = () => {
+  const {
+    t,
+    i18n: { language: locale },
+  } = useTranslation();
+
   const router = useRouter();
   const sessionForm = useForm<FocusSession>({
     initialValues: {
@@ -30,7 +38,7 @@ const IndexPage: NextPage = (): JSX.Element => {
       tag: "",
       startedAt: Date.now(),
       isAborted: false,
-      uuid: randomUUID(),
+      uuid: `{}-{}-{}-{}-{}`,
     },
 
     validate: {
@@ -38,7 +46,7 @@ const IndexPage: NextPage = (): JSX.Element => {
         min: DEFAULT_FOCUS_SETTINGS.TIMER.MIN_MINS,
         max: DEFAULT_FOCUS_SETTINGS.TIMER.MAX_MINS,
       }),
-      uuid: isNotEmpty(),
+      // uuid: isNotEmpty(),
     },
   });
 
@@ -53,12 +61,12 @@ const IndexPage: NextPage = (): JSX.Element => {
 
   const sliderOptions: SliderProps["marks"] = [
     {
-      label: "5 min.",
+      label: t("xMinutes", { minutes: 5 }),
       value: 5,
     },
     // For min < 120 min... 20min steps
     ...Array.from({ length: 6 }, (_, index) => ({
-      label: `${(index + 1) * 20} min.`,
+      label: t("xMinutes", { minutes: (index + 1) * 20 }),
       value: (index + 1) * 20,
     })),
   ];
@@ -72,35 +80,24 @@ const IndexPage: NextPage = (): JSX.Element => {
   const setCurrentSession = () => {
     const sessionData = sessionForm.values;
     setCurrentSessionValue(sessionData);
-    void router.push("/session/active");
+    void router.push(`${locale}/session/active`);
   };
 
   return (
-    <DefaultLayout>
+    <DefaultLayout withNavbarOpen>
       <Center h="100%">
         <Container w="100%" maw={600}>
           <Stack align="center" gap="xl" w="100%">
             <Title c="dark.1" fz="lg" fw="normal" ta="center">
-              Hello, {"{username}"}! You focused{" "}
-              <Text component="span" fw="bold">
-                0 minutes
-              </Text>{" "}
-              today.
+              {t("greeting", { ns: "indexPage", time: 0, username: "Tim" })}
             </Title>
             <RingProgress
               label={
                 <Text ta="center">
-                  Let's focus for{" "}
-                  <Text
-                    fz="sm"
-                    c="green"
-                    fw={900}
-                    component="span"
-                    truncate="end"
-                  >
-                    {sessionForm.values.minutes} minutes
-                  </Text>{" "}
-                  together!
+                  {t("ctaFocus", {
+                    ns: "indexPage",
+                    time: sessionForm.values.minutes,
+                  })}
                 </Text>
               }
               size={300}
@@ -146,7 +143,9 @@ const IndexPage: NextPage = (): JSX.Element => {
                   onClick={() => combobox.toggleDropdown()}
                 >
                   {sessionForm.values.tag === "" ? (
-                    <Input.Placeholder>Pick Tag</Input.Placeholder>
+                    <Input.Placeholder>
+                      {t("pickTag", { ns: "indexPage" })}
+                    </Input.Placeholder>
                   ) : (
                     <>{sessionForm.values.tag}</>
                   )}
@@ -164,7 +163,7 @@ const IndexPage: NextPage = (): JSX.Element => {
               onClick={() => setCurrentSession()}
               disabled={!sessionForm.isValid()}
             >
-              Let's Start!
+              {t("startFocus", { ns: "indexPage" })}
             </Button>
           </Stack>
         </Container>
@@ -174,3 +173,7 @@ const IndexPage: NextPage = (): JSX.Element => {
 };
 
 export default IndexPage;
+
+export const getStaticProps = makeStaticProperties(["common", "indexPage"]);
+
+export { getStaticPaths };
