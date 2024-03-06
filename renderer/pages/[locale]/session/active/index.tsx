@@ -12,9 +12,9 @@ import { readSessionStorageValue, useInterval } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { formatTimerTime } from "@utils/timer/formatTimerTime";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+// import { existsSync, mkdirSync, writeFileSync } from "fs";
 import path from "path";
-import { ipcRenderer } from "electron";
+// import { ipcRenderer } from "electron";
 import { useTranslation } from "next-i18next";
 import { getStaticPaths, makeStaticProperties } from "lib/get-static";
 
