@@ -5,13 +5,14 @@
   "minimizeApp": "Minimieren",
   "fullscreenMode": "Vollbild",
   "windowedMode": "Fenstermodus",
-  "closeApp": "Schließen",
   "minutes": "Minuten",
   "networkStatus": {
     "label": "Netzwerk Status",
     "online": "Online",
     "offline": "Offline"
   },
+  "tooltipCoins": "Du hast derzeit {{coins}} Fokus-Münzen. Du kannst mehr erhalten, wenn du Sessions abschließt. Benutze sie im Shop, um mehr Pflanzen oder Dekorationsartikel zu kaufen.",
+  "closeApp": "Schließen",
   "routes": {
     "home": "Startseite",
     "shop": "Shop",

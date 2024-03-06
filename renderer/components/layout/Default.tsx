@@ -1,14 +1,14 @@
+import ButtonWithTooltip from "@components/content/ButtonWithTooltip";
 import {
-  ActionIcon,
   AppShell,
   Container,
   Divider,
   Flex,
   Group,
   NavLink,
+  NumberFormatter,
   ScrollAreaAutosize,
   Text,
-  Tooltip,
 } from "@mantine/core";
 import {
   upperFirst,
@@ -18,6 +18,7 @@ import {
   useOs,
 } from "@mantine/hooks";
 import {
+  IconCoins,
   IconMenu2,
   IconMinus,
   IconPlant,
@@ -109,52 +110,65 @@ const DefaultLayout = ({
           w="100%"
         >
           <Group gap="lg">
-            <Tooltip label={t("toggleNavigation")} withArrow>
-              <ActionIcon
-                color="gray"
-                onClick={toggleNavbar}
-                variant="transparent"
-              >
-                <IconMenu2 />
-              </ActionIcon>
-            </Tooltip>
+            <ButtonWithTooltip
+              actionIconProps={{
+                c: "gray",
+                onClick: toggleNavbar,
+                variant: "transparent",
+              }}
+              label={t("toggleNavigation")}
+            >
+              <IconMenu2 />
+            </ButtonWithTooltip>
             <Text fz="sm" ta="center" tt="uppercase">
               {APP_NAME}
             </Text>
           </Group>
           <Group gap="lg">
+            <Group gap="xs" fw="bold">
+              <ButtonWithTooltip
+                actionIconProps={{
+                  onClick: () => void router.push(`/${locale}/shop`),
+                  variant: "default",
+                }}
+                label={t("tooltipCoins", { coins: 0 })}
+              >
+                <IconCoins />
+              </ButtonWithTooltip>
+              <NumberFormatter value={0} />
+            </Group>
             {!fullscreen ? (
-              <Tooltip label={t("minimizeApp")} withArrow>
-                <ActionIcon
-                  c="dimmed"
-                  onClick={() => sendIPC("minimize-app-window")}
-                  variant="transparent"
-                >
-                  <IconMinus />
-                </ActionIcon>
-              </Tooltip>
+              <ButtonWithTooltip
+                actionIconProps={{
+                  c: "dimmed",
+                  onClick: () => sendIPC("minimize-app-window"),
+                  variant: "transparent",
+                }}
+                label={t("minimizeApp")}
+              >
+                <IconMinus />
+              </ButtonWithTooltip>
             ) : null}
-            <Tooltip
+            <ButtonWithTooltip
+              actionIconProps={{
+                c: "dimmed",
+                onClick: () => void toggleFullscreen(),
+                variant: "transparent",
+              }}
               label={fullscreen ? t("windowedMode") : t("fullscreenMode")}
-              withArrow
             >
-              <ActionIcon
-                c="dimmed"
-                onClick={() => void toggleFullscreen()}
-                variant="transparent"
-              >
-                {fullscreen ? <IconSquaresDiagonal /> : <IconSquare />}
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip label={t("closeApp")} withArrow>
-              <ActionIcon
-                c="dimmed"
-                onClick={() => sendIPC("close-app")}
-                variant="transparent"
-              >
-                <IconSquareX />
-              </ActionIcon>
-            </Tooltip>
+              {fullscreen ? <IconSquaresDiagonal /> : <IconSquare />}
+            </ButtonWithTooltip>
+            <ButtonWithTooltip
+              actionIconProps={{
+                c: "dimmed",
+                onClick: () => sendIPC("close-app"),
+                variant: "transparent",
+              }}
+              label={t("closeApp")}
+            >
+              <IconSquareX />
+            </ButtonWithTooltip>
           </Group>
         </Flex>
       </AppShell.Header>

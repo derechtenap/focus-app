@@ -11,6 +11,7 @@
     "online": "Online",
     "offline": "Offline"
   },
+  "tooltipCoins": "You currently have {{coins}} Focus Coins. You can get more by completing sessions. Use them in the store to buy more plants or decorative items.",
   "closeApp": "Close",
   "routes": {
     "home": "Home",
