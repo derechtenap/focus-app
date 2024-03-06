@@ -3,7 +3,7 @@ import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 // import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-// import { checkAppFolders } from "utils/fs/checkAppFolders";
+import { checkAppFolderPath } from "@utils/fs/checkAppFolderPath";
 import { useRouter } from "next/router";
 import { Hydrate, QueryClientProvider } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/query-core";
@@ -51,7 +51,7 @@ const App = ({
 
   useEffect(() => {
     // Check if all necessary app folders are already created
-    // void checkAppFolders();
+    checkAppFolderPath();
   }, [router.pathname]);
 
   return (
