@@ -1,6 +1,7 @@
 import ButtonWithTooltip from "@components/content/ButtonWithTooltip";
 import {
   AppShell,
+  Avatar,
   Container,
   Divider,
   Flex,
@@ -125,6 +126,21 @@ const DefaultLayout = ({
             </Text>
           </Group>
           <Group gap="lg">
+            <Group mr="lg">
+              <Avatar
+                color="grape"
+                size="md"
+                onClick={() => void router.push(`/${locale}/profile`)}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                RLU
+              </Avatar>
+              <Text maw={120} truncate="end">
+                Really Long Username
+              </Text>
+            </Group>
             <Group gap="xs" fw="bold">
               <ButtonWithTooltip
                 actionIconProps={{
