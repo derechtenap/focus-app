@@ -12,3 +12,7 @@ export const DEFAULT_FOCUS_SETTINGS = {
   },
   DEFAULT_TAGS: ["study", "work", "meditation", "exercise", "break"],
 } as const;
+
+// Increase this integer by one when you change the schema of the indexed database
+// 1 --> 2 --> 3...
+export const DATABASE_VERSION = 1;
