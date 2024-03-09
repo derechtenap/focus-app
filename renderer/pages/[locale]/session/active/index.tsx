@@ -12,11 +12,9 @@ import { readSessionStorageValue, useInterval } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { formatTimerTime } from "@utils/timer/formatTimerTime";
-// import { existsSync, mkdirSync, writeFileSync } from "fs";
-import path from "path";
-// import { ipcRenderer } from "electron";
 import { useTranslation } from "next-i18next";
 import { getStaticPaths, makeStaticProperties } from "lib/get-static";
+import { createDatabaseSessionObject } from "@utils/db/createDatabaseSessionObject";
 
 const SessionPage = () => {
   const {
@@ -60,33 +58,9 @@ const SessionPage = () => {
       isAborted: !isSessionFinished, // Aborted when session is `not` finished
     };
 
+    createDatabaseSessionObject(data);
+
     void router.push(`/${locale}/`); // TODO: Route to overview screen instead of index page
-
-    // TODO: Update Code! `node:fs` is not working with i18n and static props
-    /*
-    ipcRenderer.send("get-app-folder");
-
-    ipcRenderer.on("app-folder-response", (event, appPath) => {
-      const sessionFolderPath = path.join(
-        appPath as string,
-        "Focus",
-        "sessions"
-      );
-      const sessionFilePath = path.join(
-        sessionFolderPath,
-        `${data.uuid}.session`
-      );
-
-      // Check if the folder exists, create it if not
-      if (!existsSync(sessionFolderPath)) {
-        mkdirSync(sessionFolderPath, { recursive: true });
-      }
-
-      // Write the file
-      writeFileSync(sessionFilePath, JSON.stringify(data), "utf8");
-    });
-    void router.push("/");
-    */
   };
 
   return (
