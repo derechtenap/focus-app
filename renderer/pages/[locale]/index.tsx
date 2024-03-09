@@ -1,4 +1,4 @@
-import React, { useId } from "react";
+import React from "react";
 import { useTranslation } from "next-i18next";
 import { getStaticPaths, makeStaticProperties } from "../../lib/get-static";
 import DefaultLayout from "@components/layout/Default";
@@ -20,7 +20,7 @@ import {
   Title,
   useCombobox,
 } from "@mantine/core";
-import { isInRange, isNotEmpty, useForm } from "@mantine/form";
+import { isInRange, useForm } from "@mantine/form";
 import { IconTag } from "@tabler/icons-react";
 
 const IndexPage = () => {
@@ -36,7 +36,6 @@ const IndexPage = () => {
       tag: "",
       startedAt: Date.now(),
       isAborted: false,
-      uuid: useId(),
     },
 
     validate: {
@@ -44,7 +43,6 @@ const IndexPage = () => {
         min: DEFAULT_FOCUS_SETTINGS.TIMER.MIN_MINS,
         max: DEFAULT_FOCUS_SETTINGS.TIMER.MAX_MINS,
       }),
-      uuid: isNotEmpty(),
     },
   });
 
