@@ -10,5 +10,5 @@ export const DEFAULT_FOCUS_SETTINGS = {
     MIN_MINS: 5,
     MAX_MINS: 120,
   },
-  DEFAULT_TAGS: ["Study", "Work", "Meditation", "Exercise", "Break"],
+  DEFAULT_TAGS: ["study", "work", "meditation", "exercise", "break"],
 } as const;

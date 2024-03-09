@@ -18,5 +18,12 @@
     "shop": "Shop",
     "settings": "Settings"
   },
-  "xMinutes": "{{minutes}} min."
+  "xMinutes": "{{minutes}} min.",
+  "defaultTags": {
+    "study": "Study",
+    "work": "Work",
+    "meditation": "Meditation",
+    "exercise": "Exercise",
+    "break": "Break"
+  }
 }

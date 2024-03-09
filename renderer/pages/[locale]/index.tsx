@@ -69,7 +69,7 @@ const IndexPage = () => {
 
   const options = DEFAULT_FOCUS_SETTINGS.DEFAULT_TAGS.map((tag) => (
     <Combobox.Option value={tag} key={tag}>
-      {tag}
+      {t(`defaultTags.${tag}`)}
     </Combobox.Option>
   ));
 
@@ -143,7 +143,7 @@ const IndexPage = () => {
                       {t("pickTag", { ns: "indexPage" })}
                     </Input.Placeholder>
                   ) : (
-                    <>{sessionForm.values.tag}</>
+                    <>{t(`defaultTags.${sessionForm.values.tag}`)}</>
                   )}
                 </InputBase>
               </Combobox.Target>
