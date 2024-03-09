@@ -7,7 +7,7 @@ declare global {
     startedAt: number;
     minutes: number;
     tag: string;
-    // sessionProgress: number; // Number between 0-100 [%]
+    sessionProgress: number; // Number between 0-100 [%]
     isAborted: boolean;
   };
 

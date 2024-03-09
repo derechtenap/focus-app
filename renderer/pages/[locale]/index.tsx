@@ -36,6 +36,7 @@ const IndexPage = () => {
       tag: "",
       startedAt: Date.now(),
       isAborted: false,
+      sessionProgress: 0,
     },
 
     validate: {

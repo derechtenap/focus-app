@@ -55,6 +55,10 @@ const SessionPage = () => {
   const closeSession = () => {
     const data: FocusSession = {
       ...sessionData,
+      sessionProgress:
+        100 -
+        ((sessionData.minutes * 60 - seconds) / (sessionData.minutes * 60)) *
+          100,
       isAborted: !isSessionFinished, // Aborted when session is `not` finished
     };
 
