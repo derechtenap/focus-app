@@ -52,10 +52,13 @@ const SessionPage = () => {
   }, [seconds]);
 
   const closeSession = () => {
+    // TODO: Save session data to store
+    /*
     const data: FocusSession = {
       ...sessionData,
       isAborted: !isSessionFinished, // Aborted when session is `not` finished
     };
+    */
 
     void router.push(`/${locale}/`); // TODO: Route to overview screen instead of index page
   };
