@@ -1,5 +1,3 @@
-import type { Profile } from "types/profile";
-
 import database from "../database";
 
 const deleteProfileFromDatabase = async (uuid: Profile["uuid"]) => {

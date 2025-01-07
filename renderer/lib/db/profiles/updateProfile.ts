@@ -1,8 +1,7 @@
-import type { Profile } from "types/profile";
-
 import database from "../database";
 
-//  Prevent overriding `uuid` in the update payload
+// Remove the "uuid" property from the Profile type.
+// This is because the "uuid" property is not meant to be updated.
 type PartialProfile = Omit<Partial<Profile>, "uuid">;
 
 const updateProfileFromDatabase = async (
