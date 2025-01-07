@@ -50,9 +50,11 @@ void (async () => {
   const defaultProfile = appSettingsStore.get("defaultProfileUUID");
 
   const port = process.argv[2];
+  // Temporary disable the welcome route
+  // TODO: Re-enable the welcome route
   const welcomeRoute = isProd
-    ? `app://./${locale}/welcome`
-    : `http://localhost:${port}/${locale}/welcome`;
+    ? `app://./${locale}/` // `app://./${locale}/welcome`
+    : `http://localhost:${port}/${locale}/`; // `http://localhost:${port}/${locale}/welcome`;
 
   if (!defaultProfile) {
     // Default profile is undefined, load url to create a new profile
