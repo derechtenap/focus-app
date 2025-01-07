@@ -1,19 +1,15 @@
 import { useTranslation } from "next-i18next";
 import { getStaticPaths, makeStaticProperties } from "@/lib/getStatic";
 import { Button, Group, Stack, Text, Title } from "@mantine/core";
-import SettingsLayout from "@/components/layouts/SettingsLayout";
-
-import ProfileAvatar from "@/components/content/ProfileAvatar";
-import getFormattedName from "utils/misc/getFormattedName";
+import SettingsLayout from "@/components/layout/SettingsLayout";
 import { IconUserDown, IconUserEdit, IconUserMinus } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 import { useRouter } from "next/router";
-import getDefaultIconSize from "utils/misc/getDefaultIconSize";
-
-// import { notifications } from "@mantine/notifications";
-// import log from "electron-log/renderer";
 import useDefaultProfile from "hooks/getDefaultProfile";
 import deleteProfileFromDatabase from "@/lib/db/profiles/deleteProfile";
+import { notifications } from "@mantine/notifications";
+import { v4 as uuidv4 } from "uuid";
+import addProfileToDatabase from "@/lib/db/profiles/addProfile";
 
 const SettingsPage = () => {
   const defaultProfile = useDefaultProfile();
@@ -49,6 +45,56 @@ const SettingsPage = () => {
     });
   };
 
+  const handleSetDebugProfile = () => {
+    const uuid = uuidv4();
+
+    addProfileToDatabase({
+      age: 18,
+      bio: "I'm a debug profile",
+      email: "",
+      name: "Debug Profile",
+      uuid,
+    })
+      .then(() => {
+        window.ipc.setDefaultProfileUUID(uuid);
+        notifications.show({
+          title: "Profile Added",
+          message: "A profile has been added to the database.",
+        });
+      })
+      .catch(
+        (error: Error) => (
+          notifications.show({
+            title: "Unable to Add Profile",
+            message: `An error occurred adding the debug profile to the database (${error.message})`,
+          }),
+          console.error("Error adding debug profile to database", error)
+        )
+      );
+  };
+
+  const handleDeleteDebugProfile = () => {
+    if (!defaultProfile) return;
+
+    deleteProfileFromDatabase(defaultProfile.uuid)
+      .then(() => {
+        window.ipc.removeDefaultProfileUUID();
+        notifications.show({
+          title: "Profile Removed",
+          message: "The default profile has been removed from the database.",
+        });
+      })
+      .catch(
+        (error: Error) => (
+          notifications.show({
+            title: "Unable to Remove Profile",
+            message: `An error occurred removing the debug profile to the database (${error.message})`,
+          }),
+          console.error("Error removing debug profile to database", error)
+        )
+      );
+  };
+
   return (
     <SettingsLayout route="/">
       <Stack>
@@ -57,31 +103,38 @@ const SettingsPage = () => {
             <Title>{t("routes.profile")}</Title>
             <Text>{t("settings:profile.text")}</Text>
             <Group>
-              <ProfileAvatar size="lg" profile={defaultProfile} />
               <Stack gap={0}>
-                <Text>{getFormattedName(defaultProfile.name)}</Text>
-                <Text fz="xs" c="dimmed">
-                  {defaultProfile.username}{" "}
-                </Text>
+                <Text>{defaultProfile.name}</Text>
+                <Group>
+                  <Button
+                    disabled={defaultProfile !== undefined}
+                    onClick={() => handleSetDebugProfile()}
+                  >
+                    Add Debug Profile
+                  </Button>
+                  <Button
+                    disabled={!defaultProfile}
+                    onClick={() => handleDeleteDebugProfile()}
+                  >
+                    Remove Debug Profile
+                  </Button>
+                </Group>
+                <Text>{JSON.stringify(defaultProfile)}</Text>
               </Stack>
             </Group>
             <Button.Group mt="lg">
               <Button
                 onClick={() => void router.push(`/${locale}/profile/edit`)}
                 variant="default"
-                leftSection={<IconUserEdit style={getDefaultIconSize()} />}
+                leftSection={<IconUserEdit />}
               >
                 {t("profile:editProfile")}
               </Button>
-              <Button
-                disabled
-                leftSection={<IconUserDown style={getDefaultIconSize()} />}
-                variant="default"
-              >
+              <Button disabled leftSection={<IconUserDown />} variant="default">
                 {t("profile:exportProfile")}
               </Button>
               <Button
-                leftSection={<IconUserMinus style={getDefaultIconSize()} />}
+                leftSection={<IconUserMinus />}
                 onClick={() => handleDeleteProfile()}
               >
                 {t("settings:deleteProfile.title")}

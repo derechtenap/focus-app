@@ -1,4 +1,4 @@
-import DefaultLayout from "@components/layout/Default";
+import DefaultLayout from "@/components/layout/Default";
 import {
   Button,
   Center,
@@ -11,9 +11,10 @@ import { useEffect, useState } from "react";
 import { readSessionStorageValue, useInterval } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import { formatTimerTime } from "@utils/timer/formatTimerTime";
+formatTimerTime;
 import { useTranslation } from "next-i18next";
-import { getStaticPaths, makeStaticProperties } from "lib/get-static";
+import { getStaticPaths, makeStaticProperties } from "lib/getStatic";
+import { formatTimerTime } from "utils/timer/formatTimerTime";
 
 const SessionPage = () => {
   const {

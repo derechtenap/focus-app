@@ -1,4 +1,4 @@
-import SettingsLayout from "@/components/layouts/SettingsLayout";
+import SettingsLayout from "@/components/layout/SettingsLayout";
 import {
   Center,
   isMantineColorScheme,
@@ -12,7 +12,6 @@ import {
 import { IconDeviceDesktop, IconMoon, IconSun } from "@tabler/icons-react";
 import { getStaticPaths, makeStaticProperties } from "@/lib/getStatic";
 import { useTranslation } from "next-i18next";
-import getDefaultIconSize from "utils/misc/getDefaultIconSize";
 import log from "electron-log/renderer";
 
 const colorSchemePage = () => {
@@ -24,7 +23,7 @@ const colorSchemePage = () => {
       value: "light",
       label: (
         <Center style={{ gap: 10 }}>
-          <IconSun style={getDefaultIconSize()} />
+          <IconSun />
           <span>{t("settings:colorSchemes.light")}</span>
         </Center>
       ),
@@ -33,7 +32,7 @@ const colorSchemePage = () => {
       value: "dark",
       label: (
         <Center style={{ gap: 10 }}>
-          <IconMoon style={getDefaultIconSize()} />
+          <IconMoon />
           <span>{t("settings:colorSchemes.dark")}</span>
         </Center>
       ),
@@ -42,7 +41,7 @@ const colorSchemePage = () => {
       value: "auto",
       label: (
         <Center style={{ gap: 10 }}>
-          <IconDeviceDesktop style={getDefaultIconSize()} />
+          <IconDeviceDesktop />
           <span>{t("settings:colorSchemes.auto")}</span>
         </Center>
       ),
@@ -68,8 +67,8 @@ const colorSchemePage = () => {
   return (
     <SettingsLayout route="colorScheme">
       <Stack>
-        <Title>{t("settings:colorScheme.title")}</Title>
-        <Text>{t("settings:colorScheme.text")}</Text>
+        <Title>{t("settings:routes.colorScheme.title")}</Title>
+        <Text>{t("settings:routes.colorScheme.text")}</Text>
         <SegmentedControl
           data={colorSchemesOptions}
           defaultValue={colorScheme}

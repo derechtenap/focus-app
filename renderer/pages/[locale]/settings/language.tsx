@@ -1,4 +1,4 @@
-import SettingsLayout from "@/components/layouts/SettingsLayout";
+import SettingsLayout from "@/components/layout/SettingsLayout";
 import { type ComboboxData, Select, Stack, Text, Title } from "@mantine/core";
 
 import { getStaticPaths, makeStaticProperties } from "@/lib/getStatic";
@@ -31,11 +31,11 @@ const colorSchemePage = () => {
   return (
     <SettingsLayout route="language">
       <Stack>
-        <Title>{t("settings:language.title")}</Title>
-        <Text>{t("settings:language.text")}</Text>
+        <Title>{t("settings:routes.language.title")}</Title>
+        <Text>{t("settings:routes.language.text")}</Text>
         <Select
           allowDeselect={false}
-          label={t("settings:language.title")}
+          label={t("settings:routes.language.title")}
           defaultValue={locale}
           data={locals}
           onChange={(newLanguage) =>

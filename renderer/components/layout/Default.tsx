@@ -1,4 +1,4 @@
-import ButtonWithTooltip from "@components/content/ButtonWithTooltip";
+import ButtonWithTooltip from "../content/ButtonWithTooltip";
 import {
   AppShell,
   Avatar,
@@ -29,6 +29,7 @@ import {
   IconSquareX,
   IconSquaresDiagonal,
 } from "@tabler/icons-react";
+import useDefaultProfile from "hooks/getDefaultProfile";
 import { i18n, useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { APP_NAME, APP_VERSION } from "utils/constants";
@@ -51,6 +52,7 @@ const DefaultLayout = ({
     useDisclosure(withNavbarOpen);
   const CLIENT_OS = useOs();
   const NETWORK_STATUS = useNetwork();
+  const defaultProfile = useDefaultProfile();
 
   const router = useRouter();
   const locale = i18n?.language as string;
@@ -135,10 +137,10 @@ const DefaultLayout = ({
                   cursor: "pointer",
                 }}
               >
-                RLU
+                {defaultProfile?.name?.charAt(0).toUpperCase()}
               </Avatar>
               <Text maw={120} truncate="end">
-                Really Long Username
+                {defaultProfile?.name}
               </Text>
             </Group>
             <Group gap="xs" fw="bold">

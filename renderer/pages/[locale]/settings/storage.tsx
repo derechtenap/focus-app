@@ -1,4 +1,4 @@
-import SettingsLayout from "@/components/layouts/SettingsLayout";
+import SettingsLayout from "@/components/layout/SettingsLayout";
 import {
   Button,
   Paper,
@@ -11,7 +11,7 @@ import {
 import { getStaticPaths, makeStaticProperties } from "@/lib/getStatic";
 import { useTranslation } from "next-i18next";
 import { modals } from "@mantine/modals";
-import deleteAllMatchesFromDatabase from "@/lib/db/matches/deleteAllMatches";
+/// import deleteAllMatchesFromDatabase from "@/lib/db/matches/deleteAllMatches";
 import { notifications } from "@mantine/notifications";
 import deleteAllProfilesFromDatabase from "@/lib/db/profiles/deleteAllProfiles";
 import { useRouter } from "next/router";
@@ -71,29 +71,6 @@ const storagePage = () => {
     });
   };
 
-  const handleDeleteAllMatches = () =>
-    modals.openConfirmModal({
-      title: t("settings:storage.modals.confirmDeleteAllMatchesTitle"),
-      children: (
-        <Text size="sm">
-          {t("settings:storage.modals.confirmDeleteAllMatchesText")}
-        </Text>
-      ),
-
-      labels: { confirm: t("confirm"), cancel: t("cancel") },
-      onConfirm: () =>
-        void deleteAllMatchesFromDatabase().then(() =>
-          notifications.show({
-            title: t(
-              "settings:storage.notifications.successDeleteAllMatchesTitle"
-            ),
-            message: t(
-              "settings:storage.notifications.successDeleteAllMatchesText"
-            ),
-          })
-        ),
-    });
-
   const handleResetApp = () => {
     modals.openConfirmModal({
       title: t("settings:storage.modals.confirmResetAppTitle"),
@@ -108,7 +85,6 @@ const storagePage = () => {
         window.ipc.removeAppSettings();
         removeColorScheme();
         removeCurrentMatch();
-        void deleteAllMatchesFromDatabase();
         void deleteAllProfilesFromDatabase();
 
         notifications.show({
@@ -129,8 +105,8 @@ const storagePage = () => {
   return (
     <SettingsLayout route="storage">
       <Stack>
-        <Title>{t("settings:storage.title")}</Title>
-        <Text>{t("settings:storage.text")}</Text>
+        <Title>{t("settings:routes.storage.title")}</Title>
+        <Text>{t("settings:routes.storage.text")}</Text>
         <Paper
           p="lg"
           withBorder
@@ -143,9 +119,6 @@ const storagePage = () => {
             <Text mb="lg">{t("settings:storage.dangerZoneText")}</Text>
             <Button variant="filled" onClick={() => handleDeleteAllProfiles()}>
               {t("settings:storage.dangerZone.btn.label.deleteAllProfiles")}
-            </Button>
-            <Button variant="filled" onClick={() => handleDeleteAllMatches()}>
-              {t("settings:storage.dangerZone.btn.label.deleteAllMatches")}
             </Button>
             <Button variant="filled" onClick={() => handleResetApp()}>
               {t("settings:storage.dangerZone.btn.label.resetApp")}

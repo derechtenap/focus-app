@@ -1,4 +1,4 @@
-import DefaultLayout, { headerHeight } from "@components/layout/Default";
+import DefaultLayout, { headerHeight } from "@/components/layout/Default";
 import {
   Card,
   Container,
@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { IconLeaf, IconPhoto } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
-import { getStaticPaths, makeStaticProperties } from "lib/get-static";
+import { getStaticPaths, makeStaticProperties } from "lib/getStatic";
 
 const ShopPage = () => {
   const { t } = useTranslation();
